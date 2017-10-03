@@ -12,8 +12,8 @@ extern void grid_generator(int n, float *x) //Generate 1-D grid
 		x[i] = ((float)pi/n)*i;
 	}
 }
-
-extern void initialize(int n, float *u, float *x, float *uh, float *u_p, float *u_pp) // Initialize with the profile given in the question
+// Initialize with the profile given in the question
+extern void initialize(int n, float *u, float *x, float *uh, float *u_p, float *u_pp) 
 {
 	int i;
 	printf("Initializing!! \n");
@@ -148,8 +148,8 @@ extern void leap_frog(float *u, float cfl, int n) // Leap frog scheme
 		u[i]=u_n[i];
 	}
 }
-
-extern void solver_TDMA(int n, float matx[n][4], float *phi) //TDMA (tri-diagonal matrix algorithm) Solver, working based on Versteeg (An Introduction to Computational Fluid Dynamics)
+//TDMA (tri-diagonal matrix algorithm) Solver, working based on Versteeg (An Introduction to Computational Fluid Dynamics)
+extern void solver_TDMA(int n, float matx[n][4], float *phi) 
 {
 	float a[n];
     float c_dash[n];
@@ -259,8 +259,8 @@ extern void timeo2_spaceo4(float *u,float cfl,int imax,float *u_p,float *u_pp)
 
 }
 
-
-extern void scheme_selector(int CASE, float *u, float cfl, int n, float *uh, float *u_p, float *u_pp) // To select the discretization scheme to be used
+// To select the discretization scheme to be used
+extern void scheme_selector(int CASE, float *u, float cfl, int n, float *uh, float *u_p, float *u_pp) 
 {
 	if (CASE==1)
 	{
@@ -296,7 +296,8 @@ extern void scheme_selector(int CASE, float *u, float cfl, int n, float *uh, flo
 	}
 }
 
-extern void solver (float *u, float *x,int nt, float dt, int n, float cfl,int CASE, FILE *fichier, float *uh, float *u_p, float *u_pp)
+extern void solver (float *u, float *x,int nt, float dt, int n, float cfl,int CASE, FILE *fichier, 
+		    float *uh, float *u_p, float *u_pp)
 {
 	int i,j;
 
