@@ -1,3 +1,3 @@
-## Intro
+# Intro
 
-We numerically solve the fundamental hyperbolic one-dimensional wave equation. The solution shows basics characteristics of the hyperbolic equations. The insighs are transferable to to more complex systems.
+We solve the one-dimensional wave equation by numerical methods. The solution shows basics characteristics of hyperbolic equations. The insighs are transferable to more complex systems.
