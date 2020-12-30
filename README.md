@@ -1,6 +1,3 @@
-# Q1_wave
+# Intro
 
-Hi!
-
-I think It's a better way to write our codes here! so we do not need to email every time.
-Also I do not know which file is the updated version in my computer :(
+We numerically solve the fundamental hyperbolic one-dimensional wave equation. The solution shows basics characteristics of the hyperbolic equations. The insighs are transferable to to more complex systems.
