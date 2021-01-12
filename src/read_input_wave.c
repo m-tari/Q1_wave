@@ -10,6 +10,7 @@ void read_input_wave(char *filename)
     if(Input==NULL)
     {
     	printf("Error: Input file (%s) not found\n ",filename);
+    	exit(0);
     }
 
 	// reading input parameters from input file

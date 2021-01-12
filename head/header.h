@@ -26,7 +26,7 @@ typedef struct S_wave
 extern S_wave *wave;
 
 /* ------ Functions -------*/
-extern void solver(_FLOAT *u, _FLOAT *x,int nt, _FLOAT dt, int n, _FLOAT cfl,int CASE, FILE *fichier, 
+extern void solver(_FLOAT *u, _FLOAT *x,int nt, _FLOAT dt, int n, _FLOAT cfl,int CASE, 
 		    _FLOAT *uh, _FLOAT *u_p, _FLOAT *u_pp);
 extern void scheme_selector(int CASE, _FLOAT *u, _FLOAT cfl, int n, _FLOAT *uh, _FLOAT *u_p, _FLOAT *u_pp);
 extern void initialize(int n, _FLOAT *u, _FLOAT *x, _FLOAT *uh, _FLOAT *u_p, _FLOAT *u_pp); 
@@ -42,6 +42,7 @@ extern void euler_forward(_FLOAT *u, _FLOAT cfl, int n);  // Euler forward schem
 extern void euler_backward(_FLOAT *u, _FLOAT cfl, int n); // Euler backward scheme
 extern void read_input_wave(char *filename);
 extern _FLOAT *allocate_1d_array(int nbpt,char *str); 
-extern void initialize_wave();
+extern void initialize_wave(char *inputfilename);
+extern void writeOutput(int j, int n, _FLOAT *x, _FLOAT *u);
 
 #endif

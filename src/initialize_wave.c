@@ -1,13 +1,12 @@
 #include "header.h"
 
-void initialize_wave()
+void initialize_wave(char *inputfilename)
 {
 	// allocate memory for beam parameters
 	wave = malloc(sizeof(S_wave));     
 
 	// read input file
-	char   filename[] = "InputFile";
-	read_input_wave(filename);
+	read_input_wave(inputfilename);
 
 	wave->u = allocate_1d_array(wave->n+1, "u");     // solution vector for now 
 	wave->x = allocate_1d_array(wave->n+1, "x");     

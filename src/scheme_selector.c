@@ -16,15 +16,15 @@ void scheme_selector(int CASE, _FLOAT *u, _FLOAT cfl, int n, _FLOAT *uh, _FLOAT 
 	}
 	else if (CASE==4)
 	{
-		lax_wendroff(u,cfl,n);
+		leap_frog(u,cfl,n);
 	}
 	else if (CASE==5)
 	{
-		lax(u,cfl,n);
+		lax_wendroff(u,cfl,n);		
 	}
 	else if (CASE==6)
 	{
-		leap_frog(u,cfl,n);
+		lax(u,cfl,n);	
 	}
 	else if (CASE==7)
 	{
