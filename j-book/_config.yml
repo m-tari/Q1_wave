@@ -1,0 +1,26 @@
+#######################################################################################
+# Book settings
+title : Advection equation numerical solution
+author: Mohammad Tari
+
+# Information about where the book exists on the web
+description: >-
+  A brief introduction to advection equation numerical solution
+
+#######################################################################################
+# Execution settings
+execute:
+  execute_notebooks           : cache
+#######################################################################################
+# Parse and render settings
+parse:
+  myst_extended_syntax      : true  # enable MyST extended syntax support (see documents for details)
+
+#######################################################################################
+# HTML-specific settings
+html:
+  home_page_in_navbar         : false
+
+# #######################################################################################
+# Interact link settings
+notebook_interface            : "notebook"
