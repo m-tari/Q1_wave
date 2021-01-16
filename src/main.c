@@ -1,3 +1,11 @@
+/*
+
+Wave, a one-dimensional advection equation solver.
+8 diferent finite difference methods are implemented.
+author: m-tari@github
+
+*/
+
 #include "header.h"
 
 struct S_wave *wave;
@@ -5,7 +13,7 @@ struct S_wave *wave;
 int main(int argc, char *argv[])
 {
 
-    printf("\nOne-dimensional wave equation solver, executable version\n");
+    printf("\nWave, a one-dimensional wave equation solver\n");
     printf("Usage:   ./wave inputfilename \n\n");	
 	
 	int i,nt;
@@ -14,10 +22,11 @@ int main(int argc, char *argv[])
 	// initialize and read input file
     initialize_wave(argv[1]);
 
-	dx = (pi - 0)/wave->n ;  // spatial grid size
-	dt = wave->cfl*dx/wave->c ;  // temporal grid size
-	nt = (int)(wave->time/dt); // number of time steps
-	printf("Number of time steps are: %d \n", nt);
+    // set spatial and temporal grid size
+	dx = (5.0 - 0)/wave->n;  // spatial grid size
+	dt = wave->cfl*dx/wave->c;  // temporal grid size
+	nt = (int)(wave->time/dt); 	// number of timesteps
+	printf("Number of time steps are: %d\n", nt);
 
 	grid_generator(wave->n, wave->x); // generation of spatial grid
 
@@ -30,7 +39,6 @@ int main(int argc, char *argv[])
 	else {
 		solver(wave->u,wave->x,nt,dt,wave->n,wave->cfl,wave->scheme,&wave->uh,wave->u_p,wave->u_pp);
 	}
-
 
 	// free memory
 	free(wave->u);

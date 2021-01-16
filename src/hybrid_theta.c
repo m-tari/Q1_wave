@@ -4,11 +4,9 @@ void hybrid_theta(_FLOAT *u, _FLOAT cfl, int n, _FLOAT *uh) //hybrid implicit-ex
 {
 	int i;
 	_FLOAT matx[n][4];
-	_FLOAT theta = 1;
+	_FLOAT theta = wave->theta;
 
-	// u[0] = u[n-1];
-	// u[n-1] = u[1];
-
+	// setting coeffecient matrix 
 	for (i=0; i<n; i++)
 	{
 		if (i==0)

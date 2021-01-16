@@ -8,14 +8,14 @@ void initialize(int n, _FLOAT *u, _FLOAT *x, _FLOAT *uh, _FLOAT *u_p, _FLOAT *u_
 
 	for (i=0; i<=n; i++)
 	{
-		if (x[i] < 0.5 || x[i] > 1.0)
+		if (x[i] < 1.5 || x[i] > 2.0)
 		{
 			uh = 0;
 			u[i] = 0;
 			u_p[i] = 0;
 			u_pp[i] = 0;
 		}
-		else if (*(x+i) >= 0.5 && *(x+i) <= 1.0)
+		else if (*(x+i) >= 1.5 && *(x+i) <= 2.0)
 		{
 			u[i] = 1;
 			u_p[i] = 1;

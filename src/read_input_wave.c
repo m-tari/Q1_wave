@@ -34,6 +34,10 @@ void read_input_wave(char *filename)
 	sscanf(line,"%d ",&wave->scheme);
 	printf("scheme  = %d\n", wave->scheme);	
 
+	fgets(line,100, Input);	
+	sscanf(line,"%lf ",&wave->theta);
+	printf("theta  = %d\n", wave->theta);	
+
 	fclose(Input);
 	
 }

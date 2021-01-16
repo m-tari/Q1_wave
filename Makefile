@@ -27,7 +27,8 @@ I_HEAD       = -I$(HDIR)
 EXE          = $(BINDIR)/wave
 
 # list of flags to pass to the compilation command:
-CFLAGS_WAVE  = -m64 -I$(HDIR)
+CFLAGS_WAVE  = -I$(HDIR)
+CFLAGS_DEBUG = -g -I$(HDIR)
 
 TARGETS      =  $(EXE)
 
@@ -52,9 +53,15 @@ wave: CFLAGS = $(CFLAGS_WAVE)
 wave: LIBS   = $(LIBS_WAVE)
 wave: $(TARGETS)
 
+# Call "make debug" to use
+.PHONY: debug
+debug: CFLAGS = $(CFLAGS_DEBUG)
+debug: LIBS   = $(LIBS_WAVE)
+debug: $(TARGETS)
+
 # compilation
 $(ODIR)/%.o: $(SDIR)/%.c  $(HEAD)
-	$(CC) $(CFLAGS_WAVE) $(I_HEAD) -c -o $@ $<
+	$(CC) $(CFLAGS) $(I_HEAD) -c -o $@ $<
 
 # object files are prerequisites
 $(EXE): $(OBJ) $(COM_OBJ)

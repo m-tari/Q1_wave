@@ -1,6 +1,6 @@
 #include "header.h"
 // To select the discretization scheme to be used
-void scheme_selector(int CASE, _FLOAT *u, _FLOAT cfl, int n, _FLOAT *uh, _FLOAT *u_p, _FLOAT *u_pp) 
+void scheme_selector(int j, int CASE, _FLOAT *u, _FLOAT cfl, int n, _FLOAT *uh, _FLOAT *u_p, _FLOAT *u_pp) 
 {
 	if (CASE==1)
 	{
@@ -16,7 +16,7 @@ void scheme_selector(int CASE, _FLOAT *u, _FLOAT cfl, int n, _FLOAT *uh, _FLOAT 
 	}
 	else if (CASE==4)
 	{
-		leap_frog(u,cfl,n);
+		leapfrog(j,u,u_p,cfl,n);
 	}
 	else if (CASE==5)
 	{

@@ -1,5 +1,5 @@
 #include "header.h"
-//TDMA (tri-diagonal matrix algorithm) Solver, working based on Versteeg (An Introduction to Computational Fluid Dynamics)
+//TDMA (tri-diagonal matrix algorithm) Solver, working based on Versteeg (An Introduction to Computational Fluid Dynamics, p-222)
 void solver_TDMA(int n, _FLOAT matx[n][4], _FLOAT *phi) 
 {
 	_FLOAT A[n];
@@ -16,6 +16,12 @@ void solver_TDMA(int n, _FLOAT matx[n][4], _FLOAT *phi)
 		beta[i] = -1*matx[i][2];
 		C[i] = matx[i][3];
 	}
+
+	// BCs
+	A[0] = 0.0;
+	c_dash[0] = phi[0];
+	A[n-1] = 0.0;
+	c_dash[n-1] = phi[n-1];
 
     for(i=1 ; i<n; i++)
         {
