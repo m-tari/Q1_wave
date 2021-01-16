@@ -11,7 +11,7 @@ kernelspec:
 
 (getting_started)=
 
-# Setting up Your Python Environment
+# Setting up Your Python Environment !
 
 ## Overview
 
