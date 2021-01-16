@@ -1,5 +1,5 @@
 # - file: README
-- file: docs/index
+- file: docs/wave.ipynb
   sections:
     - file: docs/wave.ipynb
 
