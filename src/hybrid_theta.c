@@ -1,6 +1,6 @@
 #include "header.h"
 
-void hybrid_theta(_FLOAT *u, _FLOAT cfl, int n, _FLOAT *uh) //hybrid implicit-explicit scheme
+void hybrid_theta(_FLOAT *u, _FLOAT cfl, int n) //hybrid implicit-explicit scheme
 {
 	int i;
 	_FLOAT matx[n][4];

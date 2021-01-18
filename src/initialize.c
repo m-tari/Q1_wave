@@ -1,7 +1,7 @@
 #include "header.h"
 
 // Initialize with the profile given in the question
-void initialize(int n, _FLOAT *u, _FLOAT *x, _FLOAT *uh, _FLOAT *u_p, _FLOAT *u_pp) 
+void initialize(int n, _FLOAT *u, _FLOAT *x, _FLOAT *u_p, _FLOAT *u_pp) 
 {
 	int i;
 	printf("Initializing! \n");
@@ -10,7 +10,6 @@ void initialize(int n, _FLOAT *u, _FLOAT *x, _FLOAT *uh, _FLOAT *u_p, _FLOAT *u_
 	{
 		if (x[i] < 1.5 || x[i] > 2.0)
 		{
-			uh = 0;
 			u[i] = 0;
 			u_p[i] = 0;
 			u_pp[i] = 0;

@@ -24,7 +24,4 @@ void timeo2_spaceo4(_FLOAT *u,_FLOAT cfl,int imax,_FLOAT *u_p,_FLOAT *u_pp)
    {
       u_pp[i] = u_p[i];
    }
-
-
-
 }

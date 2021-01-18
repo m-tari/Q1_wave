@@ -10,7 +10,7 @@ void read_input_wave(char *filename)
     if(Input==NULL)
     {
     	printf("Error: Input file (%s) not found\n ",filename);
-    	exit(0);
+    	exit(1);
     }
 
 	// reading input parameters from input file
@@ -35,8 +35,12 @@ void read_input_wave(char *filename)
 	printf("scheme  = %d\n", wave->scheme);	
 
 	fgets(line,100, Input);	
-	sscanf(line,"%lf ",&wave->theta);
+	sscanf(line,"%d ",&wave->theta);
 	printf("theta  = %d\n", wave->theta);	
+
+	fgets(line,100, Input);	
+	sscanf(line,"%lf ",&wave->l);
+	printf("l  = %lf\n", wave->l);	
 
 	fclose(Input);
 	
