@@ -63,8 +63,14 @@ debug: $(TARGETS)
 $(ODIR)/%.o: $(SDIR)/%.c  $(HEAD)
 	$(CC) $(CFLAGS) $(I_HEAD) -c -o $@ $<
 
+# make obj dir if it does not exist
+$(OBJ): | $(ODIR)
+
+$(ODIR):
+	mkdir $(ODIR)
+
 # object files are prerequisites
-$(EXE): $(OBJ) $(COM_OBJ)
+$(EXE): $(OBJ)
 	@$(CC) $(CFLAGS) -o $@ $(OBJ) $(LIBS)
 	@echo "Compiled executable"
 

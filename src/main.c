@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     printf("\nWave, a one-dimensional wave equation solver\n");
     printf("Usage:   ./wave inputfilename \n\n");	
 	
-	int i,nt;
+	int nt;
 	_FLOAT dt, dx;
 
 	// initialize and read input file
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	dx = wave->l/wave->n;  // spatial grid size
 	dt = wave->cfl*dx/wave->c;  // temporal grid size
 	nt = (int)(wave->time/dt); 	// number of timesteps
-	printf("Number of time steps are: %d\n", nt);
+	printf("\n\nNumber of time steps are: %d\n", nt);
 
 	grid_generator(wave->n, wave->x); // generation of spatial grid
 	

@@ -36,11 +36,11 @@ void read_input_wave(char *filename)
 
 	fgets(line,100, Input);	
 	sscanf(line,"%d ",&wave->theta);
-	printf("theta  = %d\n", wave->theta);	
+	printf("theta   = %d\n", wave->theta);	
 
 	fgets(line,100, Input);	
 	sscanf(line,"%lf ",&wave->l);
-	printf("l  = %lf\n", wave->l);	
+	printf("l       = %lf\n", wave->l);	
 
 	fclose(Input);
 	

@@ -13,7 +13,7 @@ typedef struct S_wave
 	_FLOAT c; // speed of the wave
 	_FLOAT time; // simulation duration
 	int scheme;  // discretization scheme
-	_FLOAT theta;  // theta value for hybrid scheme
+	int theta;  // theta value for hybrid scheme
 	_FLOAT l;		// length of the spatioal domain
 
 	_FLOAT *x;
@@ -31,7 +31,7 @@ extern void solver(_FLOAT *u, _FLOAT *x,int nt, _FLOAT dt, int n, _FLOAT cfl,int
 extern void scheme_selector(int j, int CASE, _FLOAT *u, _FLOAT cfl, int n, _FLOAT *u_p, _FLOAT *u_pp);
 extern void initialize(int n, _FLOAT *u, _FLOAT *x, _FLOAT *u_p, _FLOAT *u_pp); 
 extern void grid_generator(int n, _FLOAT *x); //Generate 1-D grid
-extern void timeo2_spaceo4(_FLOAT *u,_FLOAT cfl,int imax,_FLOAT *u_p,_FLOAT *u_pp);
+extern void timeo2_spaceo4(_FLOAT *u,_FLOAT cfl,int n);
 extern void hybrid_theta(_FLOAT *u, _FLOAT cfl, int n); //hybrid implicit-explicit scheme
 extern void solver_TDMA(int n, _FLOAT matx[n][4], _FLOAT *phi); 
 extern void leapfrog(int j, _FLOAT *u, _FLOAT *u_p, _FLOAT cfl, int n); // Leap frog scheme

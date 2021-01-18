@@ -32,6 +32,6 @@ void scheme_selector(int j, int CASE, _FLOAT *u, _FLOAT cfl, int n, _FLOAT *u_p,
 	}
 	else if (CASE==8)
 	{
-	   timeo2_spaceo4(u,cfl,n,u_p, u_pp);
+	   timeo2_spaceo4(u,cfl,n);
 	}
 }
