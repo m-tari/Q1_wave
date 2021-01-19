@@ -20,7 +20,6 @@ nbclient.exceptions.CellExecutionError: An error occurred while executing the fo
 df_BE_1 = pd.read_csv('../../testCases/1-BE/results-0.csv')
 df_BE_2 = pd.read_csv('../../testCases/1-BE/results-30.csv')
 df_BE_3 = pd.read_csv('../../testCases/1-BE/results-40.csv')
-
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m

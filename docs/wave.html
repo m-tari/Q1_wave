@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Theory &#8212; Advection equation numerical solution</title>
+    <title>A short theory and implementation of numerical methods on 1D advection equation &#8212; Advection equation numerical solution</title>
     
   <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -86,7 +86,7 @@
     <ul class="current nav sidenav_l1">
  <li class="toctree-l1 current active collapsible-parent">
   <a class="current reference internal" href="#">
-   Theory
+   A short theory and implementation of numerical methods on 1D advection equation
   </a>
   <ul class="simple collapse-ul">
   </ul>
@@ -184,50 +184,52 @@
   <a class="reference internal nav-link" href="#methods">
    Methods
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#backward-euler">
+     Backward Euler
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#foreward-euler">
+     Foreward Euler
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#forward-time-central-space-ftcs">
+     Forward Time Central Space (FTCS)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#leapfrog">
+     Leapfrog
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lax-wendroff">
+     Lax-Wendroff
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lax">
+     Lax
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hybrid-theta">
+     Hybrid Theta
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nd-order-in-time-4th-order-in-space-t2s4">
+     2nd order in time, 4th order in space (T2S4)
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#backward-euler">
-   Backward Euler
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#foreward-euler">
-   Foreward Euler
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#forward-time-central-space-ftcs">
-   Forward Time Central Space (FTCS)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#leapfrog">
-   Leapfrog
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#lax-wendroff">
-   Lax-Wendroff
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#lax">
-   Lax
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#hybrid-theta">
-   Hybrid Theta
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#nd-order-in-time-4th-order-in-space-t2s4">
-   2nd order in time, 4th order in space (T2S4)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#wave-shape">
-   Wave shape
+  <a class="reference internal nav-link" href="#solution">
+   Solution
   </a>
  </li>
 </ul>
@@ -241,89 +243,102 @@
         
               <div>
                 
-  <div class="section" id="theory">
-<h1>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h1>
-<p>The wave equation in one-dimensional form is written as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2503b08e-a8f2-4094-9b81-e02d86236766">
-<span class="eqno">(1)<a class="headerlink" href="#equation-2503b08e-a8f2-4094-9b81-e02d86236766" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+  <div class="section" id="a-short-theory-and-implementation-of-numerical-methods-on-1d-advection-equation">
+<h1>A short theory and implementation of numerical methods on 1D advection equation<a class="headerlink" href="#a-short-theory-and-implementation-of-numerical-methods-on-1d-advection-equation" title="Permalink to this headline">¶</a></h1>
+<p>The advection equation in one-dimensional space is written as</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bf88f324-bd71-4db4-839f-fc8615b55c0a">
+<span class="eqno">(1)<a class="headerlink" href="#equation-bf88f324-bd71-4db4-839f-fc8615b55c0a" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 \frac{\partial u}{\partial t}+c\frac{\partial u}{\partial x}=0,
 \end{equation}\]</div>
-<p>where <span class="math notranslate nohighlight">\(u\)</span> is the wave distribution in space <span class="math notranslate nohighlight">\(x\)</span> and time <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(c\)</span> is wave velocity.</p>
+<p>where <span class="math notranslate nohighlight">\(u\)</span> is the wave distribution in space <span class="math notranslate nohighlight">\(x\)</span> and time <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(c\)</span> is wave velocity. Let’s assume <span class="math notranslate nohighlight">\(u \in (0,l)\)</span> and <span class="math notranslate nohighlight">\(t \in (0,T)\)</span>. To demonstrate the effectiveness of each method on discontinouos solution, the initial condition of <span class="math notranslate nohighlight">\(u(x,t)\)</span> is set to unity in <span class="math notranslate nohighlight">\(x=[1.5,2]\)</span>, and zero in the rest of the domain.</p>
 <div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="backward-euler">
-<h2>Backward Euler<a class="headerlink" href="#backward-euler" title="Permalink to this headline">¶</a></h2>
-<div class="amsmath math notranslate nohighlight" id="equation-657011a2-33f7-494f-a95b-e303277d9f42">
-<span class="eqno">(2)<a class="headerlink" href="#equation-657011a2-33f7-494f-a95b-e303277d9f42" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-\frac{u_j^{n+1} - u_j^n}{\Delta t}+c\frac{u_j^n - u_{j-1}^n}{\Delta x} = 0
+<h3>Backward Euler<a class="headerlink" href="#backward-euler" title="Permalink to this headline">¶</a></h3>
+<p>In the Backward Euler method, the time derivative is discretized as forward difference and the space derivative is discretized as backward difference.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d7db8273-4871-42f2-9f45-2024b5ef17d1">
+<span class="eqno">(2)<a class="headerlink" href="#equation-d7db8273-4871-42f2-9f45-2024b5ef17d1" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\frac{u_j^{n+1} - u_j^n}{\Delta t}+c\frac{u_j^n - u_{j-1}^n}{\Delta x} = 0.
 \end{equation}\]</div>
-<p>putting all <span class="math notranslate nohighlight">\(n+1\)</span> terms on the left</p>
-<div class="amsmath math notranslate nohighlight" id="equation-cd94a59c-2497-4f31-8faa-14bcaaaf95f7">
-<span class="eqno">(3)<a class="headerlink" href="#equation-cd94a59c-2497-4f31-8faa-14bcaaaf95f7" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-u_j^{n+1} = u_j^n - \frac{c\Delta t}{\Delta x}(u_j^n - u_{j-1}^n)
+<p>Moving all <span class="math notranslate nohighlight">\(n+1\)</span> terms to the left hand side leads to</p>
+<div class="amsmath math notranslate nohighlight" id="equation-76e0d0ae-3d9b-4e45-8af2-7580fe8df838">
+<span class="eqno">(3)<a class="headerlink" href="#equation-76e0d0ae-3d9b-4e45-8af2-7580fe8df838" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+u_j^{n+1} = u_j^n - \frac{c\Delta t}{\Delta x}(u_j^n - u_{j-1}^n).
 \end{equation}\]</div>
 </div>
 <div class="section" id="foreward-euler">
-<h2>Foreward Euler<a class="headerlink" href="#foreward-euler" title="Permalink to this headline">¶</a></h2>
-<div class="amsmath math notranslate nohighlight" id="equation-093fb540-1dc5-4460-8c20-8efdb7fee019">
-<span class="eqno">(4)<a class="headerlink" href="#equation-093fb540-1dc5-4460-8c20-8efdb7fee019" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-\frac{u_j^{n+1} - u_j^n}{\Delta t}+c\frac{u_{j+1}^n - u_j^n}{\Delta x} = 0
+<h3>Foreward Euler<a class="headerlink" href="#foreward-euler" title="Permalink to this headline">¶</a></h3>
+<p>Both time and space derivaties are discretized by foreward differences.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b66f9368-f70f-408d-b937-571ab984ca72">
+<span class="eqno">(4)<a class="headerlink" href="#equation-b66f9368-f70f-408d-b937-571ab984ca72" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\frac{u_j^{n+1} - u_j^n}{\Delta t}+c\frac{u_{j+1}^n - u_j^n}{\Delta x} = 0,
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-f0fbdb65-9605-47d9-a3b5-6265095257fa">
-<span class="eqno">(5)<a class="headerlink" href="#equation-f0fbdb65-9605-47d9-a3b5-6265095257fa" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-u_j^{n+1} = u_j^n - \frac{c\Delta t}{\Delta x}(u_{j+1}^n - u_{j}^n)
+<div class="amsmath math notranslate nohighlight" id="equation-541c168b-b90f-453d-9d37-1b1f009ac871">
+<span class="eqno">(5)<a class="headerlink" href="#equation-541c168b-b90f-453d-9d37-1b1f009ac871" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+u_j^{n+1} = u_j^n - \frac{c\Delta t}{\Delta x}(u_{j+1}^n - u_{j}^n).
 \end{equation}\]</div>
 </div>
 <div class="section" id="forward-time-central-space-ftcs">
-<h2>Forward Time Central Space (FTCS)<a class="headerlink" href="#forward-time-central-space-ftcs" title="Permalink to this headline">¶</a></h2>
-<div class="amsmath math notranslate nohighlight" id="equation-92e0609c-c14b-4d30-bcaa-2ddb99f8084f">
-<span class="eqno">(6)<a class="headerlink" href="#equation-92e0609c-c14b-4d30-bcaa-2ddb99f8084f" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-\frac{u_j^{n+1} - u_j^n}{\Delta t}+c\frac{u_{j+1}^n - u_{j-1}^n}{\Delta x} = 0
+<h3>Forward Time Central Space (FTCS)<a class="headerlink" href="#forward-time-central-space-ftcs" title="Permalink to this headline">¶</a></h3>
+<p>A typical discretization path is to use foreward differences for the time derivates, and central differences for the space derivatives.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ac338122-258e-410d-9f22-b23839cd59ab">
+<span class="eqno">(6)<a class="headerlink" href="#equation-ac338122-258e-410d-9f22-b23839cd59ab" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+\frac{u_j^{n+1} - u_j^n}{\Delta t}+c\frac{u_{j+1}^n - u_{j-1}^n}{\Delta x} = 0,
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-c2f96c50-a761-4387-9c0d-9eac69ddfc32">
-<span class="eqno">(7)<a class="headerlink" href="#equation-c2f96c50-a761-4387-9c0d-9eac69ddfc32" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-u_j^{n+1} = u_j^n - \frac{c\Delta t}{2\Delta x}(u_{j+1}^n - u_{j-1}^n)
+<div class="amsmath math notranslate nohighlight" id="equation-7cf402ad-23b1-4198-85ae-e49c6c63f3b6">
+<span class="eqno">(7)<a class="headerlink" href="#equation-7cf402ad-23b1-4198-85ae-e49c6c63f3b6" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+u_j^{n+1} = u_j^n - \frac{c\Delta t}{2\Delta x}(u_{j+1}^n - u_{j-1}^n).
 \end{equation}\]</div>
 </div>
 <div class="section" id="leapfrog">
-<h2>Leapfrog<a class="headerlink" href="#leapfrog" title="Permalink to this headline">¶</a></h2>
-<div class="amsmath math notranslate nohighlight" id="equation-58129b97-7a83-401f-803d-5f5f838e0df9">
-<span class="eqno">(8)<a class="headerlink" href="#equation-58129b97-7a83-401f-803d-5f5f838e0df9" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-u_j^{n+1} = u_j^{n-1} - \frac{c\Delta t}{\Delta x}(u_{j+1}^n - u_{j-1}^n)
+<h3>Leapfrog<a class="headerlink" href="#leapfrog" title="Permalink to this headline">¶</a></h3>
+<p>What eles? the next choice would be using a central differencing scheme for both time and space deriatives. Though, because of the jump in time domain, we need a solution for the <span class="math notranslate nohighlight">\(n=1\)</span> timestep. One solution could be using Backward Euler method for the <span class="math notranslate nohighlight">\(n=1\)</span> timestep, and then switch to Leapfrog method.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ba330327-ce38-4a19-8276-9a6a92ea6e30">
+<span class="eqno">(8)<a class="headerlink" href="#equation-ba330327-ce38-4a19-8276-9a6a92ea6e30" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+u_j^{n+1} = u_j^{n-1} - \frac{c\Delta t}{\Delta x}(u_{j+1}^n - u_{j-1}^n).
 \end{equation}\]</div>
 </div>
 <div class="section" id="lax-wendroff">
-<h2>Lax-Wendroff<a class="headerlink" href="#lax-wendroff" title="Permalink to this headline">¶</a></h2>
-<div class="amsmath math notranslate nohighlight" id="equation-7ce6b01c-7b95-4d94-8f04-5ba8a427db93">
-<span class="eqno">(9)<a class="headerlink" href="#equation-7ce6b01c-7b95-4d94-8f04-5ba8a427db93" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-u_j^{n+1} = u_j^n - \frac{c\Delta t}{2\Delta x}(u_{j+1}^n - u_{j-1}^n) + \frac{1}{2}(\frac{c\Delta t}{\Delta x})^{2}(u_{j+1}^n - 2u_j^n + u_{j-1}^n)
+<h3>Lax-Wendroff<a class="headerlink" href="#lax-wendroff" title="Permalink to this headline">¶</a></h3>
+<p>The trick for the Lax-Wendroff scheme is to derive Taylor series for <span class="math notranslate nohighlight">\(u(x,t)\)</span> and substitie temporal terms with spatial terms so we can acheieve second-order accuracy in time and space. <a class="reference external" href="https://hplgit.github.io/fdm-book/doc/pub/book/sphinx/._book012.html#the-lax-wendroff-method">[1]</a></p>
+<div class="amsmath math notranslate nohighlight" id="equation-48ace8ac-3e3f-4436-80c5-b799e96c39fc">
+<span class="eqno">(9)<a class="headerlink" href="#equation-48ace8ac-3e3f-4436-80c5-b799e96c39fc" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+u_j^{n+1} = u_j^n - \frac{c\Delta t}{2\Delta x}(u_{j+1}^n - u_{j-1}^n) + \frac{1}{2}(\frac{c\Delta t}{\Delta x})^{2}(u_{j+1}^n - 2u_j^n + u_{j-1}^n).
 \end{equation}\]</div>
 </div>
 <div class="section" id="lax">
-<h2>Lax<a class="headerlink" href="#lax" title="Permalink to this headline">¶</a></h2>
-<div class="amsmath math notranslate nohighlight" id="equation-26e3ece0-dd3d-4476-a8b1-a700f7dc42cf">
-<span class="eqno">(10)<a class="headerlink" href="#equation-26e3ece0-dd3d-4476-a8b1-a700f7dc42cf" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<h3>Lax<a class="headerlink" href="#lax" title="Permalink to this headline">¶</a></h3>
+<p>What if we modify the FTCS scheme with averaging the neighbor values to represent the current timestep value? This idea brings us the Lax (or Lax-Friedrichs) method.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-15a21b39-daf9-44d1-9cb9-5ff03037a662">
+<span class="eqno">(10)<a class="headerlink" href="#equation-15a21b39-daf9-44d1-9cb9-5ff03037a662" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 u_j^{n+1} = \frac{u_{j+1}^n + u_{j-1}^n}{2} - \frac{c\Delta t}{2\Delta x}(u_{j+1}^n - u_{j-1}^n)
 \end{equation}\]</div>
 </div>
 <div class="section" id="hybrid-theta">
-<h2>Hybrid Theta<a class="headerlink" href="#hybrid-theta" title="Permalink to this headline">¶</a></h2>
-<div class="amsmath math notranslate nohighlight" id="equation-2ffc4cf3-5705-4893-a5ce-11f2f9953489">
-<span class="eqno">(11)<a class="headerlink" href="#equation-2ffc4cf3-5705-4893-a5ce-11f2f9953489" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-u_j^{n+1} + \theta(\frac{CFL}{2})(u_{j+1}^{n+1} - u_{j-1}^{n+1}) = u_j^n - (1-\theta)\frac{CFL}{2}(u_{j+1}^n - u_{j-1}^n)
+<h3>Hybrid Theta<a class="headerlink" href="#hybrid-theta" title="Permalink to this headline">¶</a></h3>
+<p>The previous explicit schemes are, unfortunately, not always stable (see next section). So we may decide to use implicit schemes with the hope of better stability. This decision leads to an extra step in each timestep, finding the value of finite <span class="math notranslate nohighlight">\(u\)</span>’s by solving a linear system of equations.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c253caaf-9eb5-41f0-bd84-9781be85f651">
+<span class="eqno">(11)<a class="headerlink" href="#equation-c253caaf-9eb5-41f0-bd84-9781be85f651" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+u_j^{n+1} + (\frac{c\Delta t}{2\Delta x})(u_{j+1}^{n+1} - u_{j-1}^{n+1}) = u_j^n.
+\end{equation}\]</div>
+<p>A better formulation would be merging the explicit and implicit methods with a parameter <span class="math notranslate nohighlight">\(\theta\)</span> so that one can switch between implicit and explicit methods. The next formula blends the implicit and explicit Backward Euler method, such that <span class="math notranslate nohighlight">\(\theta=1\)</span> resemles a fully implicit method while <span class="math notranslate nohighlight">\(\theta=0\)</span> returns the fully explicit method. Any <span class="math notranslate nohighlight">\(\theta\)</span> values between 0 and 1 combines a fraction of both characterisctics.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-bd1ae0ef-8fc5-4888-aad8-abe2703c0541">
+<span class="eqno">(12)<a class="headerlink" href="#equation-bd1ae0ef-8fc5-4888-aad8-abe2703c0541" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+u_j^{n+1} + \theta(\frac{c\Delta t}{2\Delta x})(u_{j+1}^{n+1} - u_{j-1}^{n+1}) = u_j^n - (1-\theta)\frac{c\Delta t}{2 \Delta x}(u_{j+1}^n - u_{j-1}^n)
 \end{equation}\]</div>
 </div>
 <div class="section" id="nd-order-in-time-4th-order-in-space-t2s4">
-<h2>2nd order in time, 4th order in space (T2S4)<a class="headerlink" href="#nd-order-in-time-4th-order-in-space-t2s4" title="Permalink to this headline">¶</a></h2>
-<div class="amsmath math notranslate nohighlight" id="equation-d8aa7373-d239-4817-b8e3-108133393218">
-<span class="eqno">(12)<a class="headerlink" href="#equation-d8aa7373-d239-4817-b8e3-108133393218" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<h3>2nd order in time, 4th order in space (T2S4)<a class="headerlink" href="#nd-order-in-time-4th-order-in-space-t2s4" title="Permalink to this headline">¶</a></h3>
+<p>In the spirit of numerical method design, we may choose to have a method that is 2nd-order accurate in time and 4th-order accurate in space. In order to achieve this goal, one path is to extend Lax-Wendroff method by retaining higher order terms. The following formula exhibits the outcome.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f208f722-ac82-46c6-9d2a-00dd9a6a1a08">
+<span class="eqno">(13)<a class="headerlink" href="#equation-f208f722-ac82-46c6-9d2a-00dd9a6a1a08" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 u_j^{n+1} = u_j^n - c\frac{\Delta t}{\Delta x}\Big[-\frac{u_{j+2}^n}{12} + \frac{2}{3}u_{j+1}^n -\frac{2}{3}u_{j-1}^n + \frac{u_{j-2}^n}{12}\Big] + \frac{1}{2}\Big(\frac{c\Delta t}{\Delta x}\Big)^2 \Big[-\frac{u_{j+2}^n}{12} + \frac{4}{3}u_{j+1}^n - \frac{5}{2}u_j^n + \frac{4}{3}u_{j-1}^n - \frac{u_{j-2}^n}{12} \Big]
 \end{equation}\]</div>
 </div>
-<div class="section" id="wave-shape">
-<h2>Wave shape<a class="headerlink" href="#wave-shape" title="Permalink to this headline">¶</a></h2>
-<p>Let’s see how the wave moves.</p>
+</div>
+<div class="section" id="solution">
+<h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
+<p>Of course, what matters is that how these methods solve the original PDE.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -343,22 +358,26 @@ u_j^{n+1} = u_j^n - c\frac{\Delta t}{\Delta x}\Big[-\frac{u_{j+2}^n}{12} + \frac
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
 
 <span class="n">y1</span> <span class="o">=</span> <span class="n">df_BE_1</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span>
 <span class="n">y2</span> <span class="o">=</span> <span class="n">df_BE_2</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span>
 <span class="n">y3</span> <span class="o">=</span> <span class="n">df_BE_3</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">df_BE_1</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">df_BE_2</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+<span class="n">x3</span> <span class="o">=</span> <span class="n">df_BE_3</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y1</span><span class="p">);</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y2</span><span class="p">);</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y3</span><span class="p">);</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="s1">&#39;o-&#39;</span><span class="p">);</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="s1">&#39;o-&#39;</span><span class="p">);</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="s1">&#39;o-&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/wave_29_0.png" src="../_images/wave_29_0.png" />
+<img alt="../_images/wave_39_0.png" src="../_images/wave_39_0.png" />
 </div>
 </div>
+<p>Not quite good for Backward Euler method. The step moves from the left to the right, but also the original shape is not retained. It is becoming more and more dissipated.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_BE</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../../testCases/1-BE/results-40.csv&#39;</span><span class="p">)</span>
@@ -386,6 +405,8 @@ u_j^{n+1} = u_j^n - c\frac{\Delta t}{\Delta x}\Big[-\frac{u_{j+2}^n}{12} + \frac
 
 <span class="n">ax1</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">))</span>
 
+<span class="n">x</span> <span class="o">=</span> <span class="n">df_BE</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+
 <span class="n">y1</span> <span class="o">=</span> <span class="n">df_BE</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span>
 <span class="n">y2</span> <span class="o">=</span> <span class="n">df_FE</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span>
 <span class="n">y3</span> <span class="o">=</span> <span class="n">df_FTCS</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span>
@@ -395,21 +416,21 @@ u_j^{n+1} = u_j^n - c\frac{\Delta t}{\Delta x}\Big[-\frac{u_{j+2}^n}{12} + \frac
 <span class="n">y7</span> <span class="o">=</span> <span class="n">df_HT</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span>
 <span class="n">y8</span> <span class="o">=</span> <span class="n">df_T2S4</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y1</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Backward Euler&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span> <span class="s1">&#39;tab:orange&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="s1">&#39;-go&#39;</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Foreward Euler&#39;</span><span class="p">)</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y3</span><span class="p">,</span> <span class="s1">&#39;tab:green&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span> <span class="s1">&#39;-ro&#39;</span><span class="p">)</span>
 <span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;FTCS&#39;</span><span class="p">)</span>
-<span class="n">ax4</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y4</span><span class="p">,</span> <span class="s1">&#39;tab:red&#39;</span><span class="p">)</span>
+<span class="n">ax4</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y4</span><span class="p">,</span> <span class="s1">&#39;-co&#39;</span><span class="p">)</span>
 <span class="n">ax4</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Leapfrog&#39;</span><span class="p">)</span>
-<span class="n">ax5</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y5</span><span class="p">,</span> <span class="s1">&#39;tab:purple&#39;</span><span class="p">)</span>
+<span class="n">ax5</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y5</span><span class="p">,</span> <span class="s1">&#39;-mo&#39;</span><span class="p">)</span>
 <span class="n">ax5</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Lax-Wendroff&#39;</span><span class="p">)</span>
-<span class="n">ax6</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y6</span><span class="p">,</span> <span class="s1">&#39;tab:cyan&#39;</span><span class="p">)</span>
+<span class="n">ax6</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y6</span><span class="p">,</span> <span class="s1">&#39;-yo&#39;</span><span class="p">)</span>
 <span class="n">ax6</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Lax&#39;</span><span class="p">)</span>
-<span class="n">ax7</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y7</span><span class="p">,</span> <span class="s1">&#39;tab:pink&#39;</span><span class="p">)</span>
+<span class="n">ax7</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y7</span><span class="p">,</span> <span class="s1">&#39;-bo&#39;</span><span class="p">)</span>
 <span class="n">ax7</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Hybrid Theta&#39;</span><span class="p">)</span>
-<span class="n">ax8</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y8</span><span class="p">,</span> <span class="s1">&#39;tab:brown&#39;</span><span class="p">)</span>
+<span class="n">ax8</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y8</span><span class="p">,</span> <span class="s1">&#39;-ko&#39;</span><span class="p">)</span>
 <span class="n">ax8</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;T2S4&#39;</span><span class="p">)</span>
 
 <span class="n">ax1</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.1f</span><span class="s1">&#39;</span><span class="p">))</span>
@@ -417,13 +438,12 @@ u_j^{n+1} = u_j^n - c\frac{\Delta t}{\Delta x}\Big[-\frac{u_{j+2}^n}{12} + \frac
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/wave_32_0.png" src="../_images/wave_32_0.png" />
+<img alt="../_images/wave_43_0.png" src="../_images/wave_43_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">animation</span><span class="p">,</span> <span class="n">rc</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
@@ -636,42 +656,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_imgffcf0abc77f4454aa5fb69530c254e11">
+  <img id="_anim_img6a553f5a10274a40bce21aae2dda6963">
   <div class="anim-controls">
-    <input id="_anim_sliderffcf0abc77f4454aa5fb69530c254e11" type="range" class="anim-slider"
+    <input id="_anim_slider6a553f5a10274a40bce21aae2dda6963" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="animffcf0abc77f4454aa5fb69530c254e11.set_frame(parseInt(this.value));"></input>
+           oninput="anim6a553f5a10274a40bce21aae2dda6963.set_frame(parseInt(this.value));"></input>
     <div class="anim-buttons">
-      <button title="Decrease speed" onclick="animffcf0abc77f4454aa5fb69530c254e11.slower()">
+      <button title="Decrease speed" onclick="anim6a553f5a10274a40bce21aae2dda6963.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" onclick="animffcf0abc77f4454aa5fb69530c254e11.first_frame()">
+      <button title="First frame" onclick="anim6a553f5a10274a40bce21aae2dda6963.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" onclick="animffcf0abc77f4454aa5fb69530c254e11.previous_frame()">
+      <button title="Previous frame" onclick="anim6a553f5a10274a40bce21aae2dda6963.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" onclick="animffcf0abc77f4454aa5fb69530c254e11.reverse_animation()">
+      <button title="Play backwards" onclick="anim6a553f5a10274a40bce21aae2dda6963.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" onclick="animffcf0abc77f4454aa5fb69530c254e11.pause_animation()">
+      <button title="Pause" onclick="anim6a553f5a10274a40bce21aae2dda6963.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" onclick="animffcf0abc77f4454aa5fb69530c254e11.play_animation()">
+      <button title="Play" onclick="anim6a553f5a10274a40bce21aae2dda6963.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" onclick="animffcf0abc77f4454aa5fb69530c254e11.next_frame()">
+      <button title="Next frame" onclick="anim6a553f5a10274a40bce21aae2dda6963.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" onclick="animffcf0abc77f4454aa5fb69530c254e11.last_frame()">
+      <button title="Last frame" onclick="anim6a553f5a10274a40bce21aae2dda6963.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" onclick="animffcf0abc77f4454aa5fb69530c254e11.faster()">
+      <button title="Increase speed" onclick="anim6a553f5a10274a40bce21aae2dda6963.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" action="#n" name="_anim_loop_selectffcf0abc77f4454aa5fb69530c254e11"
+    <form title="Repetition mode" action="#n" name="_anim_loop_select6a553f5a10274a40bce21aae2dda6963"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_ffcf0abc77f4454aa5fb69530c254e11"
+      <input type="radio" name="state" value="once" id="_anim_radio1_6a553f5a10274a40bce21aae2dda6963"
              checked>
-      <label for="_anim_radio1_ffcf0abc77f4454aa5fb69530c254e11">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_ffcf0abc77f4454aa5fb69530c254e11"
+      <label for="_anim_radio1_6a553f5a10274a40bce21aae2dda6963">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_6a553f5a10274a40bce21aae2dda6963"
              >
-      <label for="_anim_radio2_ffcf0abc77f4454aa5fb69530c254e11">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_ffcf0abc77f4454aa5fb69530c254e11"
+      <label for="_anim_radio2_6a553f5a10274a40bce21aae2dda6963">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_6a553f5a10274a40bce21aae2dda6963"
              >
-      <label for="_anim_radio3_ffcf0abc77f4454aa5fb69530c254e11">Reflect</label>
+      <label for="_anim_radio3_6a553f5a10274a40bce21aae2dda6963">Reflect</label>
     </form>
   </div>
 </div>
@@ -681,9 +701,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_imgffcf0abc77f4454aa5fb69530c254e11";
-    var slider_id = "_anim_sliderffcf0abc77f4454aa5fb69530c254e11";
-    var loop_select_id = "_anim_loop_selectffcf0abc77f4454aa5fb69530c254e11";
+    var img_id = "_anim_img6a553f5a10274a40bce21aae2dda6963";
+    var slider_id = "_anim_slider6a553f5a10274a40bce21aae2dda6963";
+    var loop_select_id = "_anim_loop_select6a553f5a10274a40bce21aae2dda6963";
     var frames = new Array(87);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -15997,7 +16017,7 @@ RLH0/wHkWHoLBdPKkAAAAABJRU5ErkJggg==\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        animffcf0abc77f4454aa5fb69530c254e11 = new Animation(frames, img_id, slider_id, 40.0,
+        anim6a553f5a10274a40bce21aae2dda6963 = new Animation(frames, img_id, slider_id, 40.0,
                                  loop_select_id);
     }, 0);
   })()
