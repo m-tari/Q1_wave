@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>A short theory and implementation of numerical methods on 1D advection equation &#8212; Advection equation numerical solution</title>
+    <title>A Short Note on Numerical Solution of 1D Advection Equation &#8212; Advection equation numerical solution</title>
     
   <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -86,7 +86,7 @@
     <ul class="current nav sidenav_l1">
  <li class="toctree-l1 current active collapsible-parent">
   <a class="current reference internal" href="#">
-   A short theory and implementation of numerical methods on 1D advection equation
+   A Short Note on Numerical Solution of 1D Advection Equation
   </a>
   <ul class="simple collapse-ul">
   </ul>
@@ -253,100 +253,101 @@
         
               <div>
                 
-  <div class="section" id="a-short-theory-and-implementation-of-numerical-methods-on-1d-advection-equation">
-<h1>A short theory and implementation of numerical methods on 1D advection equation<a class="headerlink" href="#a-short-theory-and-implementation-of-numerical-methods-on-1d-advection-equation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="a-short-note-on-numerical-solution-of-1d-advection-equation">
+<h1>A Short Note on Numerical Solution of 1D Advection Equation<a class="headerlink" href="#a-short-note-on-numerical-solution-of-1d-advection-equation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="advection-equation">
 <h2>Advection equation<a class="headerlink" href="#advection-equation" title="Permalink to this headline">¶</a></h2>
 <p>The advection equation in one-dimensional space is written as</p>
-<div class="amsmath math notranslate nohighlight" id="equation-cdb6df0e-3c75-4e02-91c9-424c06dfe60c">
-<span class="eqno">(1)<a class="headerlink" href="#equation-cdb6df0e-3c75-4e02-91c9-424c06dfe60c" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1560a3ca-27b1-407e-a118-65e0da6b5267">
+<span class="eqno">(1)<a class="headerlink" href="#equation-1560a3ca-27b1-407e-a118-65e0da6b5267" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 \frac{\partial u}{\partial t}+c\frac{\partial u}{\partial x}=0,
 \end{equation}\]</div>
-<p>where <span class="math notranslate nohighlight">\(u\)</span> is the wave distribution in space <span class="math notranslate nohighlight">\(x\)</span> and time <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(c\)</span> is wave velocity. Let’s assume <span class="math notranslate nohighlight">\(u \in (0,l)\)</span> and <span class="math notranslate nohighlight">\(t \in (0,T)\)</span>. To demonstrate the effectiveness of each method on discontinouos solution, the initial condition of <span class="math notranslate nohighlight">\(u(x,t)\)</span> is set to unity in <span class="math notranslate nohighlight">\(x=[1.5,2]\)</span>, and zero in the rest of the domain.</p>
+<p>where <span class="math notranslate nohighlight">\(u\)</span> is the wave distribution in space <span class="math notranslate nohighlight">\(x\)</span> and time <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(c\)</span> is wave velocity. This simple partial differntial equation models the transportation of <span class="math notranslate nohighlight">\(u(x,t)\)</span> in <span class="math notranslate nohighlight">\(x\)</span> direction. Let’s assume <span class="math notranslate nohighlight">\(u \in (0,l)\)</span> and <span class="math notranslate nohighlight">\(t \in (0,T)\)</span>. To demonstrate the effectiveness of each method on discontinouos solutions, the initial condition of <span class="math notranslate nohighlight">\(u(x,t)\)</span> is set to unity in <span class="math notranslate nohighlight">\(x=[1.5,2]\)</span>, and zero in the rest of the domain.</p>
 </div>
 <div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="backward-euler">
 <h3>Backward Euler<a class="headerlink" href="#backward-euler" title="Permalink to this headline">¶</a></h3>
-<p>In the Backward Euler method, the time derivative is discretized as forward difference and the space derivative is discretized as backward difference.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6d0882aa-519b-4b91-886b-756af8560813">
-<span class="eqno">(2)<a class="headerlink" href="#equation-6d0882aa-519b-4b91-886b-756af8560813" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<p>To use Backward Euler method, the time derivative is discretized by a forward difference and the space derivative is discretized by a backward difference.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-a8e6ab19-621b-4069-a489-73d6e89eb1de">
+<span class="eqno">(2)<a class="headerlink" href="#equation-a8e6ab19-621b-4069-a489-73d6e89eb1de" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 \frac{u_j^{n+1} - u_j^n}{\Delta t}+c\frac{u_j^n - u_{j-1}^n}{\Delta x} = 0.
 \end{equation}\]</div>
 <p>Moving all <span class="math notranslate nohighlight">\(n+1\)</span> terms to the left hand side leads to</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c7e5c6ae-8066-42bb-b484-9d2d62fe2fcb">
-<span class="eqno">(3)<a class="headerlink" href="#equation-c7e5c6ae-8066-42bb-b484-9d2d62fe2fcb" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2fce6f4c-146e-489f-97c1-5bb21decff39">
+<span class="eqno">(3)<a class="headerlink" href="#equation-2fce6f4c-146e-489f-97c1-5bb21decff39" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 u_j^{n+1} = u_j^n - \frac{c\Delta t}{\Delta x}(u_j^n - u_{j-1}^n).
 \end{equation}\]</div>
 </div>
 <div class="section" id="foreward-euler">
 <h3>Foreward Euler<a class="headerlink" href="#foreward-euler" title="Permalink to this headline">¶</a></h3>
 <p>Both time and space derivaties are discretized by foreward differences.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7508ac11-7eca-43e6-bb08-4162731de696">
-<span class="eqno">(4)<a class="headerlink" href="#equation-7508ac11-7eca-43e6-bb08-4162731de696" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1881dfd4-17bf-4c10-b91c-fbfc90a6d309">
+<span class="eqno">(4)<a class="headerlink" href="#equation-1881dfd4-17bf-4c10-b91c-fbfc90a6d309" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 \frac{u_j^{n+1} - u_j^n}{\Delta t}+c\frac{u_{j+1}^n - u_j^n}{\Delta x} = 0,
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-d8bafd31-b1b4-42f8-b5cb-89ff59c94add">
-<span class="eqno">(5)<a class="headerlink" href="#equation-d8bafd31-b1b4-42f8-b5cb-89ff59c94add" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6c6679cb-3af9-42b2-8ccb-8845e4602a56">
+<span class="eqno">(5)<a class="headerlink" href="#equation-6c6679cb-3af9-42b2-8ccb-8845e4602a56" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 u_j^{n+1} = u_j^n - \frac{c\Delta t}{\Delta x}(u_{j+1}^n - u_{j}^n).
 \end{equation}\]</div>
 </div>
 <div class="section" id="forward-time-central-space-ftcs">
 <h3>Forward Time Central Space (FTCS)<a class="headerlink" href="#forward-time-central-space-ftcs" title="Permalink to this headline">¶</a></h3>
 <p>A typical discretization path is to use foreward differences for the time derivates, and central differences for the space derivatives.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0ee1843c-5277-4a22-82ff-580951d03d63">
-<span class="eqno">(6)<a class="headerlink" href="#equation-0ee1843c-5277-4a22-82ff-580951d03d63" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-399a3c62-a5ec-4596-9605-7a55f764c495">
+<span class="eqno">(6)<a class="headerlink" href="#equation-399a3c62-a5ec-4596-9605-7a55f764c495" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 \frac{u_j^{n+1} - u_j^n}{\Delta t}+c\frac{u_{j+1}^n - u_{j-1}^n}{\Delta x} = 0,
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-53960400-ae8c-4f99-9635-b973ad1018f5">
-<span class="eqno">(7)<a class="headerlink" href="#equation-53960400-ae8c-4f99-9635-b973ad1018f5" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4608a682-0a25-4e1f-b68d-2166b40b2d50">
+<span class="eqno">(7)<a class="headerlink" href="#equation-4608a682-0a25-4e1f-b68d-2166b40b2d50" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 u_j^{n+1} = u_j^n - \frac{c\Delta t}{2\Delta x}(u_{j+1}^n - u_{j-1}^n).
 \end{equation}\]</div>
 </div>
 <div class="section" id="leapfrog">
 <h3>Leapfrog<a class="headerlink" href="#leapfrog" title="Permalink to this headline">¶</a></h3>
 <p>What eles? the next choice would be using a central differencing scheme for both time and space deriatives. Though, because of the jump in time domain, we need a solution for the <span class="math notranslate nohighlight">\(n=1\)</span> timestep. One solution could be using Backward Euler method for the <span class="math notranslate nohighlight">\(n=1\)</span> timestep, and then switch to Leapfrog method.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-79a6fa21-e142-4b66-8b58-467b593ebdfa">
-<span class="eqno">(8)<a class="headerlink" href="#equation-79a6fa21-e142-4b66-8b58-467b593ebdfa" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5df4ddac-32d3-4c0c-81ea-4f75bf802cc1">
+<span class="eqno">(8)<a class="headerlink" href="#equation-5df4ddac-32d3-4c0c-81ea-4f75bf802cc1" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 u_j^{n+1} = u_j^{n-1} - \frac{c\Delta t}{\Delta x}(u_{j+1}^n - u_{j-1}^n).
 \end{equation}\]</div>
 </div>
 <div class="section" id="lax-wendroff">
 <h3>Lax-Wendroff<a class="headerlink" href="#lax-wendroff" title="Permalink to this headline">¶</a></h3>
 <p>The trick for the Lax-Wendroff scheme is to derive Taylor series for <span class="math notranslate nohighlight">\(u(x,t)\)</span> and substitie temporal terms with spatial terms so we can acheieve second-order accuracy in time and space. <a class="reference external" href="https://hplgit.github.io/fdm-book/doc/pub/book/sphinx/._book012.html#the-lax-wendroff-method">[1]</a></p>
-<div class="amsmath math notranslate nohighlight" id="equation-229c312c-4e45-447e-9c83-14bb1b610d2a">
-<span class="eqno">(9)<a class="headerlink" href="#equation-229c312c-4e45-447e-9c83-14bb1b610d2a" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-96831526-594b-420b-9b18-a899bbbaa2d8">
+<span class="eqno">(9)<a class="headerlink" href="#equation-96831526-594b-420b-9b18-a899bbbaa2d8" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 u_j^{n+1} = u_j^n - \frac{c\Delta t}{2\Delta x}(u_{j+1}^n - u_{j-1}^n) + \frac{1}{2}(\frac{c\Delta t}{\Delta x})^{2}(u_{j+1}^n - 2u_j^n + u_{j-1}^n).
 \end{equation}\]</div>
 </div>
 <div class="section" id="lax">
 <h3>Lax<a class="headerlink" href="#lax" title="Permalink to this headline">¶</a></h3>
 <p>What if we modify the FTCS scheme with averaging the neighbor values to represent the current timestep value? This idea brings us the Lax (or Lax-Friedrichs) method.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dc4952c1-6667-4d30-8ad8-8fdd89426f5d">
-<span class="eqno">(10)<a class="headerlink" href="#equation-dc4952c1-6667-4d30-8ad8-8fdd89426f5d" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6b3706e9-5c71-4232-9f09-6aafe42d1b59">
+<span class="eqno">(10)<a class="headerlink" href="#equation-6b3706e9-5c71-4232-9f09-6aafe42d1b59" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 u_j^{n+1} = \frac{u_{j+1}^n + u_{j-1}^n}{2} - \frac{c\Delta t}{2\Delta x}(u_{j+1}^n - u_{j-1}^n)
 \end{equation}\]</div>
 </div>
 <div class="section" id="hybrid-theta">
 <h3>Hybrid Theta<a class="headerlink" href="#hybrid-theta" title="Permalink to this headline">¶</a></h3>
 <p>The previous explicit schemes are, unfortunately, not always stable (see next section). So we may decide to use implicit schemes with the hope of better stability. This decision leads to an extra step in each timestep, finding the value of finite <span class="math notranslate nohighlight">\(u\)</span>’s by solving a linear system of equations.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fc43ee38-ef76-46ba-bd0c-226b8de72506">
-<span class="eqno">(11)<a class="headerlink" href="#equation-fc43ee38-ef76-46ba-bd0c-226b8de72506" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0a7d7293-6c5c-469c-8e18-2278d745d84d">
+<span class="eqno">(11)<a class="headerlink" href="#equation-0a7d7293-6c5c-469c-8e18-2278d745d84d" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 u_j^{n+1} + (\frac{c\Delta t}{2\Delta x})(u_{j+1}^{n+1} - u_{j-1}^{n+1}) = u_j^n.
 \end{equation}\]</div>
 <p>A better formulation would be merging the explicit and implicit methods with a parameter <span class="math notranslate nohighlight">\(\theta\)</span> so that one can switch between implicit and explicit methods. The next formula blends the implicit and explicit Backward Euler method, such that <span class="math notranslate nohighlight">\(\theta=1\)</span> resemles a fully implicit method while <span class="math notranslate nohighlight">\(\theta=0\)</span> returns the fully explicit method. Any <span class="math notranslate nohighlight">\(\theta\)</span> values between 0 and 1 combines a fraction of both characterisctics.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-544c60b4-ceec-4441-9512-b2ec27bbc0c3">
-<span class="eqno">(12)<a class="headerlink" href="#equation-544c60b4-ceec-4441-9512-b2ec27bbc0c3" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c1816e9d-0f4e-458a-80e5-e8fa171bd498">
+<span class="eqno">(12)<a class="headerlink" href="#equation-c1816e9d-0f4e-458a-80e5-e8fa171bd498" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 u_j^{n+1} + \theta(\frac{c\Delta t}{2\Delta x})(u_{j+1}^{n+1} - u_{j-1}^{n+1}) = u_j^n - (1-\theta)\frac{c\Delta t}{2 \Delta x}(u_{j+1}^n - u_{j-1}^n)
 \end{equation}\]</div>
 </div>
 <div class="section" id="nd-order-in-time-4th-order-in-space-t2s4">
 <h3>2nd order in time, 4th order in space (T2S4)<a class="headerlink" href="#nd-order-in-time-4th-order-in-space-t2s4" title="Permalink to this headline">¶</a></h3>
-<p>In the spirit of numerical method design, we may choose to have a method that is 2nd-order accurate in time and 4th-order accurate in space. In order to achieve this goal, one path is to extend Lax-Wendroff method by retaining higher order terms. The following formula exhibits the outcome.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5259dc76-80a8-47be-9bc5-b7dea726f268">
-<span class="eqno">(13)<a class="headerlink" href="#equation-5259dc76-80a8-47be-9bc5-b7dea726f268" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-u_j^{n+1} = u_j^n - c\frac{\Delta t}{\Delta x}\Big[-\frac{u_{j+2}^n}{12} + \frac{2}{3}u_{j+1}^n -\frac{2}{3}u_{j-1}^n + \frac{u_{j-2}^n}{12}\Big] + \frac{1}{2}\Big(\frac{c\Delta t}{\Delta x}\Big)^2 \Big[-\frac{u_{j+2}^n}{12} + \frac{4}{3}u_{j+1}^n - \frac{5}{2}u_j^n + \frac{4}{3}u_{j-1}^n - \frac{u_{j-2}^n}{12} \Big]
-\end{equation}\]</div>
+<p>In the spirit of numerical method design, we may choose to have a method that is 2nd-order accurate in time and 4th-order accurate in space. In order to achieve this goal, one path is to extend Lax-Wendroff method by keeping higher order terms. The following formula exhibits the final outcome.</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*} 
+u_j^{n+1} &amp;= u_j^n - c\frac{\Delta t}{\Delta x}\Big[-\frac{u_{j+2}^n}{12} + \frac{2}{3}u_{j+1}^n -\frac{2}{3}u_{j-1}^n + \frac{u_{j-2}^n}{12}\Big] \\
+&amp;+ \frac{1}{2}\Big(\frac{c\Delta t}{\Delta x}\Big)^2 \Big[-\frac{u_{j+2}^n}{12} + \frac{4}{3}u_{j+1}^n - \frac{5}{2}u_j^n + \frac{4}{3}u_{j-1}^n - \frac{u_{j-2}^n}{12} \Big]
+\end{align*}\]</div>
 </div>
 </div>
 <div class="section" id="solution">
@@ -390,7 +391,7 @@ u_j^{n+1} = u_j^n - c\frac{\Delta t}{\Delta x}\Big[-\frac{u_{j+2}^n}{12} + \frac
 <img alt="../_images/wave_40_0.png" src="../_images/wave_40_0.png" />
 </div>
 </div>
-<p>Not quite good for Backward Euler method. The step moves from the left to the right, but also the original shape is not retained. It is becoming more and more dissipated.</p>
+<p>Not quite good for Backward Euler method. The square wave moves from the left to the right, but also the original shape is not retained. It is becoming more and more dissipated.</p>
 <p>Probably a better way to visualize it is to see this through a short animation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -11910,8 +11911,8 @@ JJXS/wcf/XfU6SrjXAAAAABJRU5ErkJggg==\
 <img alt="../_images/wave_47_0.png" src="../_images/wave_47_0.png" />
 </div>
 </div>
-<p>The Foreward Euler and FTCS methods cannot preserve the square wave. They shortly return very large numbers. The Leapfrog-generated wave is still bounded, though small waves are now following the main wave shape. The situation is better with Lax-Wendroff and Lax methods. Less extra elements, but they too cannot preserve the square shape. Hybrid method also looks okay. Some exra waves are developing on the left edge.</p>
-<p>Unfortunately, our custom made T2S4 method could not help us with solving the advection method either.</p>
+<p>The Foreward Euler and FTCS methods cannot preserve the square wave. They shortly return very large numbers. The Leapfrog-generated wave is still bounded, though small waves are now following the main wave shape. The situation is better with Lax-Wendroff and Lax methods. Less extra elements, but they too cannot preserve the square shape. Hybrid method (<span class="math notranslate nohighlight">\(\theta=1\)</span>) also looks okay. Some exra waves are developing on the left edge.</p>
+<p>Unfortunately, our custom made T2S4 method could not help us with solving the advection equation either.</p>
 <p>Let’s have a closer look on the Hybrid theta method.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -24021,12 +24022,12 @@ pJAUYCIiUkj/H9fEd/J21rHrAAAAAElFTkSuQmCC\
 </script>
 </div></div>
 </div>
-<p>The implicit method does not blow up. But the small spurious waves remain and they follow the square wave. At the end, the wave hits the right edge and reflects into the main domain. Not recognizable now with the new zig-zag shape.</p>
+<p>The implicit method does not blow up. But the small unwanted spurious waves are made and they follow the square wave. At the end, the wave hits the right edge and reflects into the main domain. The original square wave is not recognizable now by looking at the new zig-zag shape.</p>
 </div>
 <div class="section" id="what-else">
 <h2>What else?<a class="headerlink" href="#what-else" title="Permalink to this headline">¶</a></h2>
-<p>The primitive methods are consistent with what we expected to see, i.e., the sqaure wave moves to the right. But they all have limitations. Some blow up after a while, others show spuriois oscillations around discontinuties, and almost in all cases the height of the square wave decreases with time.</p>
-<p>Interesting questoins for the future would be, how to develop a method with less drawbacks? no dissipations, no oscilations and no blow ups? Can we apply them to more comlplex systems with more variables, scales and interactoins?</p>
+<p>The primitive methods are consistent with what we expected to see, i.e., the sqaure wave moves to the right. But they all have limitations. Some blow up after a while, others show spurious oscillations around discontinuties, and almost in all cases the height of the square wave decreases with time.</p>
+<p>Interesting questoins would be, how to develop a method with less drawbacks? no dissipations, no oscilations and no blow ups? Can we apply them to more comlplex systems with more variables, scales and interactoins?</p>
 <div class="toctree-wrapper compound">
 </div>
 </div>
